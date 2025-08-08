@@ -11,16 +11,16 @@ describe("Homepage", () => {
     expect(text).toBeInTheDocument();
   });
 
-  //   it("says goodbye when you click the button", async () => {
-  //     render(<Page />);
+  it("says goodbye when you click the button", async () => {
+    render(<Page />);
 
-  //     const button = screen.getByTestId("toggleHelloButton")
-  //     expect(button).toBeInTheDocument()
+    const button = screen.getByTestId("toggleHelloButton");
+    expect(button).toBeInTheDocument();
 
-  //     await userEvent.click(button)
+    await userEvent.click(button);
 
-  //     const text = await screen.findByText("Goodbye world!");
+    const text = await screen.findByText("Goodbye world!");
 
-  //     expect(text).toBeInTheDocument()
-  //   })
+    expect(text).toBeInTheDocument();
+  });
 });
