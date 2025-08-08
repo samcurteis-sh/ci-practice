@@ -8,8 +8,8 @@ echo "🔍 Running lint-staged..."
 npx lint-staged
 echo "✅ Linting completed successfully."
 
-echo "🧪 Running tests..."
-npm run test:silent || { echo "❌ Tests failed. Fix them before committing!"; exit 1; }
+echo "🧪 Running test coverage..."
+npm run coverage:silent || { echo "❌ Tests failed. Fix them before committing!"; exit 1; }
 echo "✅ All tests passed."
 
 echo "Pre-commit checks completed successfully. Proceeding with commit."
