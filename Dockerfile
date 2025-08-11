@@ -53,13 +53,13 @@ RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
 # Public assets
-COPY --from=builder /public ./public
+COPY --from=builder /app/public ./public
 
 # Entire standalone bundle (server.js, node_modules, package.json)
-COPY --from=builder --chown=nextjs:nodejs /.next/standalone ./ 
+COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./ 
 
 # Copy static assets into the location server.js expects
-COPY --from=builder --chown=nextjs:nodejs /.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 
 
