@@ -1,4 +1,4 @@
-name: Patient Onboarding Deploy
+name: Deploy
 
 on:
     workflow_dispatch:

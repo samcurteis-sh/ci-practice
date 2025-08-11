@@ -21,7 +21,7 @@ properties:
               passwordSecretRef: ghcr-key
     template:
         containers:
-            - image: ghcr.io/dentistplan/ci-practice/web:${IMAGE_TAG}
+            - image: ghcr.io/samcurteis-sh/ci-practice/web:${IMAGE_TAG}
               name: web
               resources:
                   cpu: 0.25

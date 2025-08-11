@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: ghcr.io/dentistplan/ci-practice
+  REGISTRY: ghcr.io/samcurteis-sh/ci-practice
  
 
 jobs:
