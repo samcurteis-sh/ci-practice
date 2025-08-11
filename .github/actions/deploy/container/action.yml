@@ -1,0 +1,72 @@
+name: Deploy Container App
+description: Deploy Container to an Azure Container Apps Environment
+inputs:
+  resourceGroupName:
+    description: "The resource group name"
+    required: true
+  containerAppName:
+    description: "The name of the Container App"
+    required: true
+  manifestFilePath:
+    description: "The name of the manifest file"
+    required: true
+  overwriteManifest:
+    description: "Should we overwrite the manifest file?"
+    required: false
+    default: "false"
+  customDomain:
+    description: "Custom domain to bind"
+    required: false
+  environmentUri:
+    description: "Name of the certificate in Azure"
+    required: false
+  subscriptionId:
+    description: "Azure Subscription Id"
+    required: false
+
+runs:
+  using: "composite"
+  steps:
+    - name: Overwrite deployment file
+      if: ${{ inputs.overwriteManifest == 'true' }}
+      id: manifest
+      run: |
+        dir=$(mktemp -d)
+        envsubst < ${{ inputs.manifestFilePath }} > $dir/manifest.yaml
+        echo "directory=$dir/manifest.yaml" >> $GITHUB_OUTPUT
+      shell: bash
+        
+    - name: Deploy new Container Revision
+      run: |
+        az containerapp create \
+          --resource-group ${{ inputs.resourceGroupName }} \
+          --name ${{ inputs.containerAppName }} \
+          --yaml ${{ steps.manifest.outputs.directory }}
+      shell: bash
+
+    - name: Add Hostname (if provided)
+      if: ${{ inputs.customDomain != '' }}
+      run: |
+        az containerapp hostname add \
+          --hostname ${{ inputs.customDomain }} \
+          --resource-group ${{ inputs.resourceGroupName }} \
+          --name "${{ inputs.containerAppName }}" \
+          --subscription ${{ inputs.subscriptionId }}
+      shell: bash
+
+    - name: Bind Hostname
+      if: ${{ inputs.customDomain != '' }}
+      run: |
+        az containerapp hostname bind \
+          --hostname ${{ inputs.customDomain }} \
+          --resource-group ${{ inputs.resourceGroupName }} \
+          --name "${{ inputs.containerAppName }}" \
+          --environment ${{ inputs.environmentUri }} \
+          --validation-method CNAME \
+          --subscription ${{ inputs.subscriptionId }}
+      shell: bash
+
+    - name: Clean up temp directory
+      run: |
+        rm -rf ${{ steps.manifest.outputs.directory }}
+      shell: bash
