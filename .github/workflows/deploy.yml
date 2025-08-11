@@ -25,7 +25,7 @@ jobs:
               with:
                   sparse-checkout: |
                       .github/actions
-                      apps/patient-onboarding/manifest.yaml
+                      manifest.yaml
                   sparse-checkout-cone-mode: false
             - name: Azure login
               uses: azure/login@v2
@@ -49,7 +49,7 @@ jobs:
               with:
                   resourceGroupName: ${{ vars.AZURE_RESOURCE_GROUP }}
                   containerAppName: ${{ steps.container_app_name.outputs.value }}
-                  manifestFilePath: ./apps/patient-onboarding/manifest.yaml
+                  manifestFilePath: ./manifest.yaml
                   overwriteManifest: true
                   customDomain: ${{ vars.ONBOARDING_APP_DOMAIN || ''}}
                   environmentUri: ${{ vars.AZURE_ENVIRONMENT_ID }}

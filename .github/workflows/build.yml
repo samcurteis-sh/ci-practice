@@ -1,4 +1,4 @@
-name: Patient NextJS Build
+name: Build
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
 
 env:
-  REGISTRY: ghcr.io/dentistplan/patient-portal
+  REGISTRY: ghcr.io/dentistplan/ci-practice
  
 
 jobs:
