@@ -59,7 +59,7 @@ COPY --from=builder /public ./public
 COPY --from=builder --chown=nextjs:nodejs /.next/standalone ./ 
 
 # Copy static assets into the location server.js expects
-COPY --from=builder --chown=nextjs:nodejs /.next/static ./apps/patient-onboarding/.next/static
+COPY --from=builder --chown=nextjs:nodejs /.next/static ./.next/static
 # (optional convenience copy to root for debugging)
 COPY --from=builder --chown=nextjs:nodejs /.next/static ./.next/static
 
