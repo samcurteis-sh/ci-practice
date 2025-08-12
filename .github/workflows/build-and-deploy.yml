@@ -65,7 +65,7 @@ jobs:
   deploy:
     needs: build
     runs-on: ubuntu-latest
-    environment: ${{ github.event.inputs.environment || 'nonprod' }}
+    environment: ${{ github.event.inputs.environment || 'sandbox' }}
     permissions:
       contents: read
       id-token: write
@@ -88,7 +88,7 @@ jobs:
       - name: Set container app name
         id: container_app_name
         run: |
-          NAME="patient-onboarding"
+          NAME="ci-practice"
           if [[ "${{ contains(inputs.environment, 'sandbox') }}" == "true" ]]; then
             ENVIRONMENT="${{ inputs.environment }}"
             NAME="${NAME}-${ENVIRONMENT#sandbox-}"
