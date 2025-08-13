@@ -35,20 +35,19 @@ if echo "$CHANGED_FILES" | grep -q "^shared/"; then
 fi
 
 # Decide what to run
-if [ "$changed_shared" = true ]; then
+if [[ "$changed_shared" = true || ( "$changed_app1" = true && "$changed_app2" = true ) ]]; then
   echo "🛠 Changes detected in shared code — running tests for both apps..."
+  npm run coverage || { echo "❌ Tests failed."; exit 1; }
+  echo "✅ All relevant tests passed."
+  exit 0
+elif [[ "$changed_app1" = true ]]; then
+  echo "🛠 Changes detected in app1 — running app1 tests..."
   npm run coverage:app1 || { echo "❌ Tests failed for app1"; exit 1; }
+elif [[ "$changed_app2" = true ]]; then
+  echo "🛠 Changes detected in app2 — running app2 tests..."
   npm run coverage:app2 || { echo "❌ Tests failed for app2"; exit 1; }
 else
-  if [ "$changed_app1" = true ]; then
-    echo "🛠 Changes detected in app1 — running app1 tests..."
-    npm run coverage:app1 || { echo "❌ Tests failed for app1"; exit 1; }
-  fi
-
-  if [ "$changed_app2" = true ]; then
-    echo "🛠 Changes detected in app2 — running app2 tests..."
-    npm run coverage:app2 || { echo "❌ Tests failed for app2"; exit 1; }
-  fi
+  echo "No changes made to applications. Tests skipped."
 fi
 
 echo "✅ All relevant tests passed."
