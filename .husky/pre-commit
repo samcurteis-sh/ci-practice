@@ -47,7 +47,7 @@ elif [[ "$changed_app2" = true ]]; then
   echo "🛠 Changes detected in app2 — running app2 tests..."
   npm run coverage:app2 || { echo "❌ Tests failed for app2"; exit 1; }
 else
-  echo "No changes made to applications. Tests skipped."
+  echo "✅ No changes made to applications. Tests skipped."
   exit 0
 fi
 
