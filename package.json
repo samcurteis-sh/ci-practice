@@ -2,18 +2,22 @@
   "name": "ci-practice",
   "version": "0.1.0",
   "private": true,
+  "workspaces": [
+    "apps/*"
+  ],
   "scripts": {
-    "dev": "next dev --turbopack",
-    "build": "next build",
-    "start": "next start",
+    "dev:app1": "next dev apps/app1 --turbopack -p 3000",
+    "dev:app2": "next dev apps/app2 --turbopack -p 3001",
+    "build:app1": "next build apps/app1",
+    "build:app2": "next build apps/app2",
+    "start:app1": "next start apps/app1 -p 3000",
+    "start:app2": "next start apps/app2 -p 3001",
     "lint": "next lint",
     "prepare": "husky",
     "test": "vitest run",
-    "test:watch": "vitest watch",
-    "test:silent": "vitest run --silent",
+    "watch": "vitest watch",
     "coverage": "vitest run --coverage",
     "coverage:watch": "vitest watch --coverage",
-    "coverage:silent": "vitest run --coverage --silent",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

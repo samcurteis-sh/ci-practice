@@ -1,0 +1,31 @@
+identity:
+    type: UserAssigned
+    userAssignedIdentities:
+        "${AZURE_IDENTITY}": {}
+
+kind: containerapp
+type: Microsoft.App/containerApps
+properties:
+    environmentId: "${AZURE_ENVIRONMENT_ID}"
+    configuration:
+        identitySettings:
+            - identity: "${AZURE_IDENTITY}"
+              lifecycle: "None"
+        ingress:
+            external: "true"
+            targetPort: 3000
+            allowInsecure: "true"
+        registries:
+            - server: ghcr.io
+              username: dentistplan-machine-user
+              passwordSecretRef: ghcr-key
+    template:
+        containers:
+            - image: ghcr.io/samcurteis-sh/ci-practice/web:${IMAGE_TAG}
+              name: web
+              resources:
+                  cpu: 0.25
+                  memory: 0.5Gi
+        scale:
+            minReplicas: ${REPLICAS}
+            maxReplicas: ${REPLICAS}

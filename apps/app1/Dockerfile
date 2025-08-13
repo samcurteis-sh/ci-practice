@@ -37,9 +37,9 @@ ARG NODE_ENV
 RUN if [ "$NODE_ENV" = "development" ]; then cp .env.local .env; fi
 
 RUN \
-  if [ -f yarn.lock ]; then yarn run build; \
-  elif [ -f package-lock.json ]; then npm run build; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
+  if [ -f yarn.lock ]; then yarn run build:app1; \
+  elif [ -f package-lock.json ]; then npm run build:app1; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build:app1; \
   else echo "Lockfile not found." && exit 1; \
   fi
 
@@ -53,13 +53,13 @@ RUN addgroup -g 1001 -S nodejs
 RUN adduser -S nextjs -u 1001
 
 # Public assets
-COPY --from=builder /app/public ./public
+COPY --from=builder /app/apps/app1/public ./public
 
 # Entire standalone bundle (server.js, node_modules, package.json)
-COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./ 
+COPY --from=builder --chown=nextjs:nodejs /app/apps/app1/.next/standalone ./ 
 
 # Copy static assets into the location server.js expects
-COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/app1/.next/static ./.next/static
 
 
 

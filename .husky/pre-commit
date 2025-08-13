@@ -8,8 +8,33 @@ echo "🔍 Running lint-staged..."
 npx lint-staged
 echo "✅ Linting completed successfully."
 
-echo "🧪 Running test coverage..."
-npm run coverage:silent || { echo "❌ Tests failed. Fix them before committing!"; exit 1; }
-echo "✅ All tests passed."
+
+
+
+# Get list of staged files
+CHANGED_FILES=$(git diff --cached --name-only)
+
+changed_app1=$(echo "$CHANGED_FILES" | grep -q "^apps/app1/" && echo true || echo false)
+changed_app2=$(echo "$CHANGED_FILES" | grep -q "^apps/app2/" && echo true || echo false)
+changed_shared=$(echo "$CHANGED_FILES" | grep -q "^shared/" && echo true || echo false)
+
+if changed_app1 && changed_app2 || changed_shared; then
+  echo "Both apps and/ or shared code changed → running tests for whole repo..."
+  npm run coverage || { echo "❌ Tests failed. Fix them before committing!"; exit 1; }
+  echo "Pre-commit checks completed successfully. Proceeding with commit."
+  exit 0
+fi
+
+# If app1 changed
+if changed_app1; then
+  echo "App1 changed. Running unit tests for App 1..."
+  npm run coverage:app1 || { echo "❌ Tests failed for app1. Fix them before committing!"; exit 1; }
+fi
+
+# If app2 changed
+if changed_app2; then
+  echo "App2 changed. Running unit tests for App 2..."
+  npm run coverage:app2 || { echo "❌ Tests failed for app2. Fix them before committing!"; exit 1; }
+fi
 
 echo "Pre-commit checks completed successfully. Proceeding with commit."

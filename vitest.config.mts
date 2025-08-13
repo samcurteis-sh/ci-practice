@@ -36,7 +36,7 @@ export default defineConfig({
         "**/*.config.mjs",
         "__mocks__/**",
         "**/**/next.config.ts",
-        "app/layout.tsx",
+        "**/app/layout.tsx",
         "e2e/**",
         "playwright-report",
         "playwright.config.ts"
