@@ -115,7 +115,7 @@ jobs:
                 path: playwright-report/
                 retention-days: 30  
             - name: Run app2 locally
-              if: needs.detect-changes.outputs.app1_changed == 'true'
+              if: needs.detect-changes.outputs.app2_changed == 'true'
               env: 
                 CONFIG_VARIABLE: "this comes from the workflow app2"
               run: npm run dev:app2 & npx wait-on http://localhost:3001
@@ -123,7 +123,7 @@ jobs:
               if: needs.detect-changes.outputs.app2_changed == 'true'
               run: npx playwright test apps/app2
             - uses: actions/upload-artifact@v4
-              if: ${{ !cancelled() && needs.detect-changes.outputs.app2_changed }}
+              if: ${{ !cancelled() && needs.detect-changes.outputs.app2_changed == 'true' }}
               with:
                 name: playwright-report-app2
                 path: playwright-report/
