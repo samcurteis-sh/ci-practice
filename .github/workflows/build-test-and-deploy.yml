@@ -1,4 +1,4 @@
-name: Test, Build and Deploy App1
+name: Test, Build and Deploy
 
 on:
   push:
@@ -102,9 +102,12 @@ jobs:
                 path: coverage
                 retention-days: 30
             - name: Install Playwright Browsers
+              if: needs.detect-changes.outputs.app1_changed || needs.detect-changes.outputs.app2_changed
               run: npx playwright install --with-deps
             - name: Run app1 locally
               if: needs.detect-changes.outputs.app1_changed
+              env: 
+                CONFIG_VARIABLE: "this comes from the workflow app1"
               run: npm run dev:app1 & npx wait-on http://localhost:3000
             - name: Run Playwright tests for app1
               if: needs.detect-changes.outputs.app1_changed
@@ -117,6 +120,8 @@ jobs:
                 retention-days: 30  
             - name: Run app2 locally
               if: needs.detect-changes.outputs.app1_changed
+              env: 
+                CONFIG_VARIABLE: "this comes from the workflow app2"
               run: npm run dev:app2 & npx wait-on http://localhost:3001
             - name: Run Playwright tests for app2
               if: needs.detect-changes.outputs.app2_changed
@@ -273,7 +278,7 @@ jobs:
           push: true
 
   deploy-app2:
-    needs: build-app1
+    needs: build-app2
     runs-on: ubuntu-latest
     environment: ${{ github.event.inputs.environment || 'sandbox' }}
     permissions:
