@@ -12,7 +12,7 @@
     "build:app2": "next build apps/app2",
     "start:app1": "next start apps/app1 -p 3000",
     "start:app2": "next start apps/app2 -p 3001",
-    "lint": "next lint",
+    "lint": "npx eslint apps/app1 apps/app2",
     "prepare": "husky",
     "test": "vitest run",
     "watch": "vitest watch",
