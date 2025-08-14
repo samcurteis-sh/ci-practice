@@ -98,29 +98,29 @@ jobs:
                 path: coverage
                 retention-days: 30
             - name: Install Playwright Browsers
-              if: needs.detect-changes.outputs.app1_changed || needs.detect-changes.outputs.app2_changed
+              if: ${{ needs.detect-changes.outputs.app1_changed == 'true' || needs.detect-changes.outputs.app2_changed == 'true' }}
               run: npx playwright install --with-deps
             - name: Run app1 locally
-              if: needs.detect-changes.outputs.app1_changed
+              if: needs.detect-changes.outputs.app1_changed == 'true'
               env: 
                 CONFIG_VARIABLE: "this comes from the workflow app1"
               run: npm run dev:app1 & npx wait-on http://localhost:3000
             - name: Run Playwright tests for app1
-              if: needs.detect-changes.outputs.app1_changed
+              if: needs.detect-changes.outputs.app1_changed == 'true'
               run: npx playwright test apps/app1
             - uses: actions/upload-artifact@v4
-              if: ${{ !cancelled() && needs.detect-changes.outputs.app1_changed }}
+              if: ${{ !cancelled() && needs.detect-changes.outputs.app1_changed == 'true' }}
               with:
                 name: playwright-report-app1
                 path: playwright-report/
                 retention-days: 30  
             - name: Run app2 locally
-              if: needs.detect-changes.outputs.app1_changed
+              if: needs.detect-changes.outputs.app1_changed == 'true'
               env: 
                 CONFIG_VARIABLE: "this comes from the workflow app2"
               run: npm run dev:app2 & npx wait-on http://localhost:3001
             - name: Run Playwright tests for app2
-              if: needs.detect-changes.outputs.app2_changed
+              if: needs.detect-changes.outputs.app2_changed == 'true'
               run: npx playwright test apps/app2
             - uses: actions/upload-artifact@v4
               if: ${{ !cancelled() && needs.detect-changes.outputs.app2_changed }}
