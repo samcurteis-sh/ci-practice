@@ -133,7 +133,7 @@ jobs:
     needs: 
       - test
       - detect-changes
-    if: needs.detect-changes.outputs.app1_changed
+    if: needs.detect-changes.outputs.app1_changed == 'true'
     permissions:
       contents: read
       packages: write
@@ -227,7 +227,7 @@ jobs:
     needs: 
       - test
       - detect-changes
-    if: needs.detect-changes.outputs.app2_changed
+    if: needs.detect-changes.outputs.app2_changed == 'true'
     permissions:
       contents: read
       packages: write
