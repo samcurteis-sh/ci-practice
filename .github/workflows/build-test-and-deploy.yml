@@ -76,14 +76,13 @@ jobs:
 
                 if [ "$APP1" = "true" ] && [ "$APP2" = "true" ]; then
                   echo "Both apps changed — running all tests"
-                  TEST_DIRS=""
+                  npm run coverage
                 else
-                  TEST_DIRS=""
                   if [ "$APP1" = "true" ]; then
-                    TEST_DIRS="$TEST_DIRS apps/app1"
+                    npm run coverage:app1
                   fi
                   if [ "$APP2" = "true" ]; then
-                    TEST_DIRS="$TEST_DIRS apps/app2"
+                    npm run coverage:app2
                   fi
                 fi
 
@@ -92,9 +91,6 @@ jobs:
                   exit 0
                 fi
 
-                echo "Running tests in: ${TEST_DIRS:-'entire repo'}"
-                npx vitest run --coverage.enabled --coverage.provider=istanbul \
-                  --coverage.reporter=html --coverage.reporter=text $TEST_DIRS
             - name: Upload coverage report
               uses: actions/upload-artifact@v4
               with:
