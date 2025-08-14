@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - trunk
+      - turborepo
   workflow_dispatch:
     inputs:
       environment:
